@@ -1,0 +1,91 @@
+<div class="row" ng-controller="lineCtrl">
+	<div class="col-md-4">
+		<div class="panel panel-default chart-info-panel">
+			<div class="panel-body">
+				<div class="chart-info-label panel-title"> 
+					<b> Line Chart Info </b>
+				</div>
+					
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="col-md-3 control-label"> Title </label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" ng-model="title" />
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-md-5 col-md-offset-3">
+							<a class="btn btn-success btn-sm" ng-click="addData()" title="Add Lines"><span class="glyphicon glyphicon-plus"></span></a>
+							<a class="btn btn-danger btn-sm" ng-click="removeData()" title="Remove Lines"><span class="glyphicon glyphicon-minus"></span></a>
+						</div>
+					</div>
+				</form>
+
+				<hr class="divider">
+				<div class="{{getLabelDropup()}}">
+					<a data-toggle="collapse" href="#labels-collapse" class="panel-title" ng-click="toggleLabelDropup()"><b>X-Axis Labels </b><span class="caret"></span></a>
+				</div>
+				<div id="labels-collapse" class="info-list panel-collapse collapse">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<div class="col-md-5 col-md-offset-2">
+								<a class="btn btn-success btn-sm" ng-click="addXAxis()" title="Add X-Axis Points"><span class="glyphicon glyphicon-plus"></span></a>
+								<a class="btn btn-danger btn-sm" ng-click="removeXAxis()" title="Remove X-Axis Points"><span class="glyphicon glyphicon-minus"></span></a>
+							</div>
+						</div>	
+						<div class="form-group" ng-repeat="j in countArray2">
+							<div class="col-md-8 col-md-offset-2">
+								<input type="text" class="form-control" ng-model="xLabels[$index]" />
+							</div>
+						</div>			
+					</form>
+				</div>
+				<hr class="divider">
+				
+				<div ng-repeat="i in countArray" class="{{getIndexDropup($index)}}" >
+						
+					<a data-toggle="collapse" href="#line-collapse-{{$index + 1}}" class="panel-title" ng-click="toggleDropup($index)"><b>Line {{$index + 1}}</b><span class="caret"></span></a>
+					
+					<div id="line-collapse-{{$index + 1}}" class="info-list panel-collapse collapse {{collapseIndex($index)}}">
+						<form class="form-horizontal">
+							<div class="form-group">
+								<label class="col-md-5 control-label"> Label </label>
+								<div class="col-md-6">
+									<input type="text" class="form-control" ng-model="labels[$index]" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-5 control-label"> Color </label>
+								<div class="col-md-3">
+									<input type="color" class="form-control" ng-model="colors[$index]" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-offset-3 control-label"> Values </label>
+							</div>
+							<div class="form-group" ng-repeat="j in countArray2">
+								<label class="col-md-5 x-axis-label"> {{xLabels[$index]}} </label>
+								<div class="col-md-6">
+									<input type="number" class="form-control" ng-model="values[$parent.$index][$index]" />
+								</div>
+							</div>
+						</form>
+					</div>
+					<hr class="divider">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-8">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<h4><b id="lineChartTitle">{{getTitle()}}</b></h4>      
+				<div class="panel-body" id="lineChartContainer">
+					<canvas id="lineChart" ng-init="loadGraph();"></canvas>
+				</div>
+				<button class="btn" ng-click="download('#lineChart','#lineChartTitle')">Download PDF</button>
+			</div>
+		</div>
+	</div>
+</div>

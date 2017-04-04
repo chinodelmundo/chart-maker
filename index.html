@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<title>Chart Maker</title>
+		
+		<!-- CSS -->
+		<link href="include/css/bootstrap.min.css" rel="stylesheet">
+		<link href="include/css/chartMaker.css" rel="stylesheet">
+
+		<!-- Javascript -->
+		<script src="include/js/jquery-3.2.1.min.js"></script>
+		<script src="include/js/angular.min.js"></script>
+		<script src="include/js/Chart.min.js"></script>
+		<script src="include/js/chartMaker.js"></script>
+
+	</head>
+	<body ng-app="myApp" ng-controller="pageCtrl">
+	
+		<div ng-include="'layouts/navbar.html'"></div>
+		
+		<div class="container">
+			<div ng-include="'layouts/barChart.html'" ng-show="barVisible"></div>
+			<div ng-include="'layouts/pieChart.html'" ng-show="pieVisible"></div>
+			<div ng-include="'layouts/lineChart.html'" ng-show="lineVisible"></div>
+		</div>
+		
+		<script src="include/js/bootstrap.min.js"></script>
+		<script src="include/js/jspdf.debug.js"></script>
+		<script src="include/js/html2canvas.js"></script>
+	</body>
+</html>
