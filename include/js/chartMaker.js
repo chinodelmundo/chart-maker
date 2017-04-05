@@ -1,26 +1,16 @@
 var app = angular.module('myApp', []);
 
 app.controller('pageCtrl', function($scope) {
-	$scope.barVisible = true;
-	$scope.pieVisible = false;
-	$scope.lineVisible = false;
+	$scope.chartVisible = [true, false, false];
 	
-	$scope.showBar = function(){
-		$scope.barVisible = true;
-		$scope.pieVisible = false;
-		$scope.lineVisible = false;
-	};
-	
-	$scope.showPie = function(){
-		$scope.pieVisible = true;
-		$scope.barVisible = false;
-		$scope.lineVisible = false;
-	};
-
-	$scope.showLine = function(){
-		$scope.lineVisible = true;
-		$scope.pieVisible = false;
-		$scope.barVisible = false;
+	$scope.showChart = function(index){
+		$scope.chartVisible = $scope.chartVisible.map(function (value, i){
+			if(i == index){
+				return true;
+			}else{
+				return false;
+			}
+		});
 	};
 
 	$scope.getRandomColor = function() {
@@ -63,6 +53,11 @@ app.controller('pageCtrl', function($scope) {
 			}
 		});
 	}
+
+	$scope.clearChart = function(chartID, containerID){
+		$('#'+chartID).remove();
+		$('#'+containerID).append('<canvas id="'+chartID+'"><canvas>');
+	};
 });
 
 app.controller('barCtrl', function($scope) {
@@ -86,7 +81,7 @@ app.controller('barCtrl', function($scope) {
 		$scope.countArray.push($scope.count);
 		$scope.dropupBool.push(0);
 		
-		$scope.clearChart();
+		$scope.clearChart("barChart","barChartContainer");
 		$scope.loadChart();
 	};
 	
@@ -98,7 +93,7 @@ app.controller('barCtrl', function($scope) {
 		$scope.countArray.pop();
 		$scope.dropupBool.pop();
 		
-		$scope.clearChart();
+		$scope.clearChart("barChart","barChartContainer");
 		$scope.loadChart();
 	};
 	
@@ -135,8 +130,7 @@ app.controller('barCtrl', function($scope) {
 				return a + b;
 			});
 		}, function(newValue, oldValue) {
-			
-			$scope.clearChart();
+			$scope.clearChart("barChart","barChartContainer");
 			$scope.loadChart();
 		}
 	);
@@ -172,11 +166,28 @@ app.controller('barCtrl', function($scope) {
 			}
 		});
 	};
-	
-	$scope.clearChart = function(){
-		$('#barChart').remove();
-		$('#barChartContainer').append('<canvas id="barChart"><canvas>');
-	};
+
+	$scope.reset = function(){
+		$scope.title = "Bar Chart";
+		$scope.labels = ["Bar 1","Bar 2","Bar 3"];
+		$scope.colors = ["#ff63eb","#ff6384","#63f7ff"];
+		$scope.values = $scope.getRandomValue(3);
+		$scope.countArray = [1,2,3];
+		$scope.count = 3;
+
+		if($scope.dropupBool.length >= 3){
+			$scope.dropupBool = $scope.dropupBool.splice(0,3);
+		}else if($scope.dropupBool.length > 0){
+			for(var i = 0; i <= (3 - $scope.dropupBool.length); i++){
+				$scope.dropupBool.push(0);
+			}
+		}else{
+			$scope.dropupBool = [1,0,0];
+		}
+
+		$scope.clearChart("barChart","barChartContainer");
+		$scope.loadChart();
+	}
 });
 
 app.controller('pieCtrl', function($scope) {
@@ -200,7 +211,7 @@ app.controller('pieCtrl', function($scope) {
 		$scope.countArray.push($scope.count);
 		$scope.dropupBool.push(0);
 		
-		$scope.clearChart();
+		$scope.clearChart("pieChart","pieChartContainer");
 		$scope.loadChart();
 	};
 	
@@ -212,7 +223,7 @@ app.controller('pieCtrl', function($scope) {
 		$scope.countArray.pop();
 		$scope.dropupBool.pop();
 		
-		$scope.clearChart();
+		$scope.clearChart("pieChart","pieChartContainer");
 		$scope.loadChart();
 	};
 	
@@ -249,7 +260,7 @@ app.controller('pieCtrl', function($scope) {
 				return a + b;
 			});
 		}, function(newValue, oldValue) {
-			$scope.clearChart();
+			$scope.clearChart("pieChart","pieChartContainer");
 			$scope.loadChart();
 		}
 	);
@@ -268,11 +279,28 @@ app.controller('pieCtrl', function($scope) {
 				}
 		});
 	};
-	
-	$scope.clearChart = function(){
-		$('#pieChart').remove();
-		$('#pieChartContainer').append('<canvas id="pieChart"><canvas>');
-	};
+
+	$scope.reset = function(){
+		$scope.title = "Pie Chart";
+		$scope.labels = ["Segment 1","Segment 2","Segment 3"];
+		$scope.colors = ["#ff63eb","#ff6384","#63f7ff"];
+		$scope.values = $scope.getRandomValue(3);
+		$scope.countArray = [1,2,3];
+		$scope.count = 3;
+
+		if($scope.dropupBool.length >= 3){
+			$scope.dropupBool = $scope.dropupBool.splice(0,3);
+		}else if($scope.dropupBool.length > 0){
+			for(var i = 0; i <= (3 - $scope.dropupBool.length); i++){
+				$scope.dropupBool.push(0);
+			}
+		}else{
+			$scope.dropupBool = [1,0,0];
+		}
+
+		$scope.clearChart("pieChart","pieChartContainer");
+		$scope.loadChart();
+	}
 });
 
 app.controller('lineCtrl', function($scope) {
@@ -365,7 +393,7 @@ app.controller('lineCtrl', function($scope) {
 			$scope.values[i].push($scope.getRandomValue(1)[0]);
 		}
 
-		$scope.clearChart();
+		$scope.clearChart("lineChart","lineChartContainer");
 		$scope.loadChart();
 	}
 
@@ -378,7 +406,7 @@ app.controller('lineCtrl', function($scope) {
 			$scope.values[i].pop();
 		}
 
-		$scope.clearChart();
+		$scope.clearChart("lineChart","lineChartContainer");
 		$scope.loadChart();
 	}
 	
@@ -393,8 +421,7 @@ app.controller('lineCtrl', function($scope) {
 				return a + b;
 			});
 		}, function(newValue, oldValue) {
-			
-			$scope.clearChart();
+			$scope.clearChart("lineChart","lineChartContainer");
 			$scope.loadChart();
 		}
 	);
@@ -425,10 +452,30 @@ app.controller('lineCtrl', function($scope) {
 				}
 		});
 	};
-	
-	$scope.clearChart = function(){
-		$('#lineChart').remove();
-		$('#lineChartContainer').append('<canvas id="lineChart"><canvas>');
-	};
+
+	$scope.reset = function(){
+		$scope.title = "Line Chart";
+		$scope.labels = ["Line 1","Line 2","Line 3"];
+		$scope.colors = ["#ff63eb","#ff6384","#63f7ff"];
+		$scope.values = [$scope.getRandomValue(5), $scope.getRandomValue(5), $scope.getRandomValue(5)];
+		$scope.xLabels = ["Mon","Tue","Wed","Thurs","Fri"];
+		$scope.countArray = [1,2,3];
+		$scope.countArray2 = [1,2,3,4,5];
+		$scope.count = 3;
+		$scope.count2 = 5;
+
+		if($scope.dropupBool.length >= 3){
+			$scope.dropupBool = $scope.dropupBool.splice(0,3);
+		}else if($scope.dropupBool.length > 0){
+			for(var i = 0; i <= (3 - $scope.dropupBool.length); i++){
+				$scope.dropupBool.push(0);
+			}
+		}else{
+			$scope.dropupBool = [1,0,0];
+		}
+
+		$scope.clearChart("lineChart","lineChartContainer");
+		$scope.loadChart();
+	}
 });
 

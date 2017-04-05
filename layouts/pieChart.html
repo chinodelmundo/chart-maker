@@ -4,6 +4,7 @@
 			<div class="panel-body">
 				<div class="chart-info-label panel-title"> 
 					<b> Pie Chart Info </b>
+					<button class="btn btn-default btn-sm pull-right" title="Reset" ng-click="reset()"><span class="glyphicon glyphicon-refresh pull-right"></span></button>
 				</div>
 					
 				<form class="form-horizontal">
@@ -58,7 +59,7 @@
 	<div class="col-md-8">
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<h4><b id="pieChartTitle">{{getTitle()}}</b></h4>      
+				<h4 class="chart-title" id="pieChartTitle">{{getTitle()}}</h4>      
 				<div class="panel-body" id="pieChartContainer" >
 					<canvas id="pieChart" ng-init="loadGraph();"></canvas>
 				</div>

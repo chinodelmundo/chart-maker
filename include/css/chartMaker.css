@@ -22,3 +22,8 @@
 	font-weight: 500;
 	padding-top: 7px;
 }
+
+.chart-title {
+	text-align: center;
+	font-weight: 700;
+}

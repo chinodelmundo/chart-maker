@@ -4,6 +4,7 @@
 			<div class="panel-body">
 				<div class="chart-info-label panel-title"> 
 					<b> Line Chart Info </b>
+					<button class="btn btn-default btn-sm pull-right" title="Reset" ng-click="reset()"><span class="glyphicon glyphicon-refresh pull-right"></span></button>
 				</div>
 					
 				<form class="form-horizontal">
@@ -80,7 +81,7 @@
 	<div class="col-md-8">
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<h4><b id="lineChartTitle">{{getTitle()}}</b></h4>      
+				<h4 class="chart-title" id="lineChartTitle">{{getTitle()}}</h4>      
 				<div class="panel-body" id="lineChartContainer">
 					<canvas id="lineChart" ng-init="loadGraph();"></canvas>
 				</div>

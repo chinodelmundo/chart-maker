@@ -18,9 +18,9 @@
 		<div ng-include="'layouts/navbar.html'"></div>
 		
 		<div class="container">
-			<div ng-include="'layouts/barChart.html'" ng-show="barVisible"></div>
-			<div ng-include="'layouts/pieChart.html'" ng-show="pieVisible"></div>
-			<div ng-include="'layouts/lineChart.html'" ng-show="lineVisible"></div>
+			<div ng-include="'layouts/barChart.html'" ng-show="chartVisible[0]"></div>
+			<div ng-include="'layouts/pieChart.html'" ng-show="chartVisible[1]"></div>
+			<div ng-include="'layouts/lineChart.html'" ng-show="chartVisible[2]"></div>
 		</div>
 		
 		<script src="include/js/bootstrap.min.js"></script>
