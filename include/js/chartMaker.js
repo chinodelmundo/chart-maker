@@ -80,9 +80,6 @@ app.controller('barCtrl', function($scope) {
 		$scope.values.push($scope.getRandomValue(1)[0]);
 		$scope.countArray.push($scope.count);
 		$scope.dropupBool.push(0);
-		
-		$scope.clearChart("barChart","barChartContainer");
-		$scope.loadChart();
 	};
 	
 	$scope.removeData = function(){
@@ -92,9 +89,6 @@ app.controller('barCtrl', function($scope) {
 		$scope.values.pop();
 		$scope.countArray.pop();
 		$scope.dropupBool.pop();
-		
-		$scope.clearChart("barChart","barChartContainer");
-		$scope.loadChart();
 	};
 	
 	$scope.collapseIndex = function(index){
@@ -130,8 +124,7 @@ app.controller('barCtrl', function($scope) {
 				return a + b;
 			});
 		}, function(newValue, oldValue) {
-			$scope.clearChart("barChart","barChartContainer");
-			$scope.loadChart();
+			$scope.updateChart();
 		}
 	);
 	
@@ -139,7 +132,7 @@ app.controller('barCtrl', function($scope) {
 
 		var ctx = document.getElementById("barChart").getContext("2d");
 
-		var myBar = new Chart(ctx, {
+		$scope.myBarChart = new Chart(ctx, {
 			type: 'bar',
 			data: {
 					labels: $scope.labels,
@@ -166,6 +159,11 @@ app.controller('barCtrl', function($scope) {
 			}
 		});
 	};
+
+	$scope.updateChart = function(){
+		$scope.myBarChart.data.datasets[0].backgroundColor = $scope.colors.map(function (value){return $scope.hexToRgbA(value);});
+		$scope.myBarChart.update();
+	}
 
 	$scope.reset = function(){
 		$scope.title = "Bar Chart";
@@ -210,9 +208,6 @@ app.controller('pieCtrl', function($scope) {
 		$scope.values.push($scope.getRandomValue(1)[0]);
 		$scope.countArray.push($scope.count);
 		$scope.dropupBool.push(0);
-		
-		$scope.clearChart("pieChart","pieChartContainer");
-		$scope.loadChart();
 	};
 	
 	$scope.removeData = function(){
@@ -222,9 +217,6 @@ app.controller('pieCtrl', function($scope) {
 		$scope.values.pop();
 		$scope.countArray.pop();
 		$scope.dropupBool.pop();
-		
-		$scope.clearChart("pieChart","pieChartContainer");
-		$scope.loadChart();
 	};
 	
 	$scope.collapseIndex = function(index){
@@ -260,15 +252,14 @@ app.controller('pieCtrl', function($scope) {
 				return a + b;
 			});
 		}, function(newValue, oldValue) {
-			$scope.clearChart("pieChart","pieChartContainer");
-			$scope.loadChart();
+			$scope.updateChart();
 		}
 	);
 	
 	$scope.loadChart = function() {
 		var ctx = document.getElementById("pieChart").getContext("2d");
 		
-		var myPieChart = new Chart(ctx,{
+		$scope.myPieChart = new Chart(ctx,{
 			type: 'pie',
 			data: {
 					labels: $scope.labels,
@@ -279,6 +270,11 @@ app.controller('pieCtrl', function($scope) {
 				}
 		});
 	};
+
+	$scope.updateChart = function(){
+		$scope.myPieChart.data.datasets[0].backgroundColor = $scope.colors.map(function (value){return $scope.hexToRgbA(value);});
+		$scope.myPieChart.update();
+	}
 
 	$scope.reset = function(){
 		$scope.title = "Pie Chart";
@@ -327,8 +323,8 @@ app.controller('lineCtrl', function($scope) {
 		$scope.values.push($scope.getRandomValue($scope.count2));
 		$scope.countArray.push($scope.count);
 		$scope.dropupBool.push(0);
-		
-		$scope.clearChart();
+
+		$scope.clearChart("lineChart","lineChartContainer");
 		$scope.loadChart();
 	};
 	
@@ -339,8 +335,8 @@ app.controller('lineCtrl', function($scope) {
 		$scope.values.pop();
 		$scope.countArray.pop();
 		$scope.dropupBool.pop();
-		
-		$scope.clearChart();
+
+		$scope.clearChart("lineChart","lineChartContainer");
 		$scope.loadChart();
 	};
 	
@@ -392,9 +388,6 @@ app.controller('lineCtrl', function($scope) {
 		for(var i = 0; i < $scope.values.length; i++){
 			$scope.values[i].push($scope.getRandomValue(1)[0]);
 		}
-
-		$scope.clearChart("lineChart","lineChartContainer");
-		$scope.loadChart();
 	}
 
 	$scope.removeXAxis = function(){
@@ -405,9 +398,6 @@ app.controller('lineCtrl', function($scope) {
 		for(var i = 0; i < $scope.values.length; i++){
 			$scope.values[i].pop();
 		}
-
-		$scope.clearChart("lineChart","lineChartContainer");
-		$scope.loadChart();
 	}
 	
 	$scope.$watch(function(){
@@ -421,14 +411,13 @@ app.controller('lineCtrl', function($scope) {
 				return a + b;
 			});
 		}, function(newValue, oldValue) {
-			$scope.clearChart("lineChart","lineChartContainer");
-			$scope.loadChart();
+			$scope.updateChart();
 		}
 	);
 	
 	$scope.loadChart = function() {
 		
-		var linesInfo = [];
+		$scope.linesInfo = [];
 		var line = {};
 		for(var i = 0; i < $scope.count; i++){
 			line = {
@@ -439,19 +428,23 @@ app.controller('lineCtrl', function($scope) {
 	            data: $scope.values[i]
 			}
 
-			linesInfo.push(line);
+			$scope.linesInfo.push(line);
 		}
 
 		var ctx = document.getElementById("lineChart").getContext("2d");
 		
-		var myPieChart = new Chart(ctx,{
+		$scope.myLineChart = new Chart(ctx,{
 			type: 'line',
 			data: {
 				    labels: $scope.xLabels,
-				    datasets: linesInfo
+				    datasets: $scope.linesInfo
 				}
 		});
 	};
+
+	$scope.updateChart = function(){
+		$scope.myLineChart.update();
+	}
 
 	$scope.reset = function(){
 		$scope.title = "Line Chart";
