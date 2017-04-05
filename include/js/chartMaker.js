@@ -37,7 +37,7 @@ app.controller('pageCtrl', function($scope) {
 			c= [c[0], c[0], c[1], c[1], c[2], c[2]];
 		}
 		c= '0x'+c.join('');
-		return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',0.5)';
+		return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',0.7)';
 	}
 
 	$scope.download = function(chartID, titleID){
@@ -53,11 +53,6 @@ app.controller('pageCtrl', function($scope) {
 			}
 		});
 	}
-
-	$scope.clearChart = function(chartID, containerID){
-		$('#'+chartID).remove();
-		$('#'+containerID).append('<canvas id="'+chartID+'"><canvas>');
-	};
 });
 
 app.controller('barCtrl', function($scope) {
@@ -89,6 +84,10 @@ app.controller('barCtrl', function($scope) {
 		$scope.values.pop();
 		$scope.countArray.pop();
 		$scope.dropupBool.pop();
+
+		if($scope.count < 0){
+			$scope.count = 0;
+		}
 	};
 	
 	$scope.collapseIndex = function(index){
@@ -166,25 +165,13 @@ app.controller('barCtrl', function($scope) {
 	}
 
 	$scope.reset = function(){
-		$scope.title = "Bar Chart";
-		$scope.labels = ["Bar 1","Bar 2","Bar 3"];
-		$scope.colors = ["#ff63eb","#ff6384","#63f7ff"];
-		$scope.values = $scope.getRandomValue(3);
-		$scope.countArray = [1,2,3];
-		$scope.count = 3;
-
-		if($scope.dropupBool.length >= 3){
-			$scope.dropupBool = $scope.dropupBool.splice(0,3);
-		}else if($scope.dropupBool.length > 0){
-			for(var i = 0; i <= (3 - $scope.dropupBool.length); i++){
-				$scope.dropupBool.push(0);
-			}
-		}else{
-			$scope.dropupBool = [1,0,0];
+		while($scope.count > 0){
+			$scope.removeData();
 		}
 
-		$scope.clearChart("barChart","barChartContainer");
-		$scope.loadChart();
+		$scope.addData();
+		$scope.addData();
+		$scope.addData();
 	}
 });
 
@@ -201,7 +188,7 @@ app.controller('pieCtrl', function($scope) {
 		return $scope.title;
 	};
 	
-	$scope.addData = function(){
+	$scope.addData = function(count){
 		$scope.count++;
 		$scope.labels.push("Segment " + $scope.count);
 		$scope.colors.push($scope.getRandomColor());
@@ -217,6 +204,10 @@ app.controller('pieCtrl', function($scope) {
 		$scope.values.pop();
 		$scope.countArray.pop();
 		$scope.dropupBool.pop();
+
+		if($scope.count < 0){
+			$scope.count = 0;
+		}
 	};
 	
 	$scope.collapseIndex = function(index){
@@ -277,25 +268,13 @@ app.controller('pieCtrl', function($scope) {
 	}
 
 	$scope.reset = function(){
-		$scope.title = "Pie Chart";
-		$scope.labels = ["Segment 1","Segment 2","Segment 3"];
-		$scope.colors = ["#ff63eb","#ff6384","#63f7ff"];
-		$scope.values = $scope.getRandomValue(3);
-		$scope.countArray = [1,2,3];
-		$scope.count = 3;
-
-		if($scope.dropupBool.length >= 3){
-			$scope.dropupBool = $scope.dropupBool.splice(0,3);
-		}else if($scope.dropupBool.length > 0){
-			for(var i = 0; i <= (3 - $scope.dropupBool.length); i++){
-				$scope.dropupBool.push(0);
-			}
-		}else{
-			$scope.dropupBool = [1,0,0];
+		while($scope.count > 0){
+			$scope.removeData();
 		}
 
-		$scope.clearChart("pieChart","pieChartContainer");
-		$scope.loadChart();
+		$scope.addData();
+		$scope.addData();
+		$scope.addData();
 	}
 });
 
@@ -324,8 +303,13 @@ app.controller('lineCtrl', function($scope) {
 		$scope.countArray.push($scope.count);
 		$scope.dropupBool.push(0);
 
-		$scope.clearChart("lineChart","lineChartContainer");
-		$scope.loadChart();
+		$scope.data.push({
+					label: $scope.labels[$scope.count - 1],
+		            fill: false,
+		            backgroundColor: $scope.hexToRgbA($scope.colors[$scope.count - 1]),
+		            borderColor:  $scope.hexToRgbA($scope.colors[$scope.count - 1]),
+		            data: $scope.values[$scope.count - 1]
+				});
 	};
 	
 	$scope.removeData = function(){
@@ -334,10 +318,13 @@ app.controller('lineCtrl', function($scope) {
 		$scope.colors.pop();
 		$scope.values.pop();
 		$scope.countArray.pop();
-		$scope.dropupBool.pop();
+		$scope.dropupBool.pop();	
 
-		$scope.clearChart("lineChart","lineChartContainer");
-		$scope.loadChart();
+		$scope.data.pop();
+
+		if($scope.count < 0){
+			$scope.count = 0;
+		}
 	};
 	
 	$scope.collapseIndex = function(index){
@@ -417,7 +404,7 @@ app.controller('lineCtrl', function($scope) {
 	
 	$scope.loadChart = function() {
 		
-		$scope.linesInfo = [];
+		var temp = [];
 		var line = {};
 		for(var i = 0; i < $scope.count; i++){
 			line = {
@@ -428,8 +415,10 @@ app.controller('lineCtrl', function($scope) {
 	            data: $scope.values[i]
 			}
 
-			$scope.linesInfo.push(line);
+			temp.push(line);
 		}
+
+		$scope.data = temp;
 
 		var ctx = document.getElementById("lineChart").getContext("2d");
 		
@@ -437,38 +426,40 @@ app.controller('lineCtrl', function($scope) {
 			type: 'line',
 			data: {
 				    labels: $scope.xLabels,
-				    datasets: $scope.linesInfo
+				    datasets: $scope.data
 				}
 		});
 	};
 
 	$scope.updateChart = function(){
+		$scope.myLineChart.data.labels = $scope.xLabels;
+		$scope.myLineChart.data.datasets.forEach(function (line, index){
+			line.label = $scope.labels[index];
+			line.backgroundColor = $scope.hexToRgbA($scope.colors[index]);
+			line.borderColor = $scope.hexToRgbA($scope.colors[index]);
+		});
+
 		$scope.myLineChart.update();
 	}
 
 	$scope.reset = function(){
-		$scope.title = "Line Chart";
-		$scope.labels = ["Line 1","Line 2","Line 3"];
-		$scope.colors = ["#ff63eb","#ff6384","#63f7ff"];
-		$scope.values = [$scope.getRandomValue(5), $scope.getRandomValue(5), $scope.getRandomValue(5)];
-		$scope.xLabels = ["Mon","Tue","Wed","Thurs","Fri"];
-		$scope.countArray = [1,2,3];
-		$scope.countArray2 = [1,2,3,4,5];
-		$scope.count = 3;
-		$scope.count2 = 5;
-
-		if($scope.dropupBool.length >= 3){
-			$scope.dropupBool = $scope.dropupBool.splice(0,3);
-		}else if($scope.dropupBool.length > 0){
-			for(var i = 0; i <= (3 - $scope.dropupBool.length); i++){
-				$scope.dropupBool.push(0);
-			}
-		}else{
-			$scope.dropupBool = [1,0,0];
+		while($scope.count > 0){
+			$scope.removeData();
 		}
 
-		$scope.clearChart("lineChart","lineChartContainer");
-		$scope.loadChart();
+		while($scope.count2 > 0){
+			$scope.removeXAxis();
+		}
+
+		$scope.addData();
+		$scope.addData();
+		$scope.addData();
+		
+		$scope.addXAxis();
+		$scope.addXAxis();
+		$scope.addXAxis();
+		$scope.addXAxis();
+		$scope.addXAxis();
 	}
 });
 
