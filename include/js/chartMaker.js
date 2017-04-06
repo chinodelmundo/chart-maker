@@ -2,7 +2,8 @@ var app = angular.module('myApp', []);
 
 app.controller('pageCtrl', function($scope) {
 	$scope.chartVisible = [true, false, false];
-	
+	$scope.defaultColors = ["#ff63eb","#ff6384","#63f7ff"];
+
 	$scope.showChart = function(index){
 		$scope.chartVisible = $scope.chartVisible.map(function (value, i){
 			if(i == index){
@@ -37,7 +38,7 @@ app.controller('pageCtrl', function($scope) {
 			c= [c[0], c[0], c[1], c[1], c[2], c[2]];
 		}
 		c= '0x'+c.join('');
-		return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',0.7)';
+		return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',0.6)';
 	}
 
 	$scope.download = function(chartID, titleID){
@@ -165,13 +166,21 @@ app.controller('barCtrl', function($scope) {
 	}
 
 	$scope.reset = function(){
-		while($scope.count > 0){
+		$scope.title = "Bar Chart";
+
+		while($scope.count > 3){
 			$scope.removeData();
 		}
 
-		$scope.addData();
-		$scope.addData();
-		$scope.addData();
+		while($scope.count < 3){
+			$scope.addData();
+		}
+
+		for(var i = 0; i < $scope.count; i++){
+			$scope.values[i] = $scope.getRandomValue(1)[0];
+			$scope.labels[i] = "Bar " + (i + 1);
+			$scope.colors[i] = $scope.defaultColors[i]
+		}
 	}
 });
 
@@ -268,13 +277,21 @@ app.controller('pieCtrl', function($scope) {
 	}
 
 	$scope.reset = function(){
-		while($scope.count > 0){
+		$scope.title = "Pie Chart";
+
+		while($scope.count > 3){
 			$scope.removeData();
 		}
 
-		$scope.addData();
-		$scope.addData();
-		$scope.addData();
+		while($scope.count < 3){
+			$scope.addData();
+		}
+
+		for(var i = 0; i < $scope.count; i++){
+			$scope.values[i] = $scope.getRandomValue(1)[0];
+			$scope.labels[i] = "Segment " + (i + 1);
+			$scope.colors[i] = $scope.defaultColors[i]
+		}
 	}
 });
 
@@ -283,7 +300,7 @@ app.controller('lineCtrl', function($scope) {
 	$scope.labels = ["Line 1","Line 2","Line 3"];
 	$scope.colors = ["#ff63eb","#ff6384","#63f7ff"];
 	$scope.values = [$scope.getRandomValue(5), $scope.getRandomValue(5), $scope.getRandomValue(5)];
-	$scope.xLabels = ["Mon","Tue","Wed","Thurs","Fri"];
+	$scope.xLabels = ["Point 1","Point 2","Point 3","Point 4","Point 5"];
 	$scope.dropupBool = [1,0,0];
 	$scope.countArray = [1,2,3];
 	$scope.countArray2 = [1,2,3,4,5];
@@ -443,23 +460,36 @@ app.controller('lineCtrl', function($scope) {
 	}
 
 	$scope.reset = function(){
-		while($scope.count > 0){
+		$scope.title = "Line Chart";
+
+		while($scope.count > 3){
 			$scope.removeData();
 		}
 
-		while($scope.count2 > 0){
+		while($scope.count < 3){
+			$scope.addData();
+		}
+
+		while($scope.count2 > 5){
 			$scope.removeXAxis();
 		}
 
-		$scope.addData();
-		$scope.addData();
-		$scope.addData();
-		
-		$scope.addXAxis();
-		$scope.addXAxis();
-		$scope.addXAxis();
-		$scope.addXAxis();
-		$scope.addXAxis();
+		while($scope.count2 < 5){
+			$scope.addXAxis();
+		}
+
+		for(var i = 0; i < $scope.count; i++){
+			for(var j = 0; j < $scope.count2; j++){
+				$scope.values[i][j] = $scope.getRandomValue(1)[0];
+			}
+			
+			$scope.labels[i] = "Line " + (i + 1);
+			$scope.colors[i] = $scope.defaultColors[i]
+		}
+
+		for(var k = 0; k < $scope.count2; k++){
+			$scope.xLabels[k] = "Point " + (k + 1);
+		}
 	}
 });
 
