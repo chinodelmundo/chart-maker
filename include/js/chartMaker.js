@@ -2,7 +2,7 @@ var app = angular.module('myApp', []);
 
 app.controller('pageCtrl', function($scope) {
 	$scope.chartVisible = [true, false, false];
-	$scope.defaultColors = ["#ff63eb","#ff6384","#63f7ff"];
+	$scope.defaultColors = ["#ff63eb","#73ff5e","#63f7ff"];
 
 	$scope.showChart = function(index){
 		$scope.chartVisible = $scope.chartVisible.map(function (value, i){
@@ -59,7 +59,7 @@ app.controller('pageCtrl', function($scope) {
 app.controller('barCtrl', function($scope) {
 	$scope.title = "Bar Chart";
 	$scope.labels = ["Bar 1","Bar 2","Bar 3"];
-	$scope.colors = ["#ff63eb","#ff6384","#63f7ff"];
+	$scope.colors = ["#ff63eb","#73ff5e","#63f7ff"];
 	$scope.values = $scope.getRandomValue(3);
 	$scope.dropupBool = [1,0,0];
 	$scope.countArray = [1,2,3];
@@ -187,7 +187,7 @@ app.controller('barCtrl', function($scope) {
 app.controller('pieCtrl', function($scope) {
 	$scope.title = "Pie Chart";
 	$scope.labels = ["Segment 1","Segment 2","Segment 3"];
-	$scope.colors = ["#ff63eb","#ff6384","#63f7ff"];
+	$scope.colors = ["#ff63eb","#73ff5e","#63f7ff"];
 	$scope.values = $scope.getRandomValue(3);
 	$scope.dropupBool = [1,0,0];
 	$scope.countArray = [1,2,3];
@@ -298,7 +298,7 @@ app.controller('pieCtrl', function($scope) {
 app.controller('lineCtrl', function($scope) {
 	$scope.title = "Line Chart";
 	$scope.labels = ["Line 1","Line 2","Line 3"];
-	$scope.colors = ["#ff63eb","#ff6384","#63f7ff"];
+	$scope.colors = ["#ff63eb","#73ff5e","#63f7ff"];
 	$scope.values = [$scope.getRandomValue(5), $scope.getRandomValue(5), $scope.getRandomValue(5)];
 	$scope.xLabels = ["Point 1","Point 2","Point 3","Point 4","Point 5"];
 	$scope.dropupBool = [1,0,0];
@@ -386,7 +386,7 @@ app.controller('lineCtrl', function($scope) {
 
 	$scope.addXAxis = function(){
 		$scope.count2++;
-		$scope.xLabels.push("New Label");
+		$scope.xLabels.push("Point " + $scope.count2);
 		$scope.countArray2.push($scope.count2);
 		
 		for(var i = 0; i < $scope.values.length; i++){
