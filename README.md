@@ -14,4 +14,4 @@ See demo: [https://chinodelmundo.github.io//chart-maker/](https://chinodelmundo.
 <kbd><img src="./images/pie_charts.png"></kbd>
 
 #### Line Charts
-<kbd><img src="./images/line_chart.png"></kbd>
+<kbd><img src="./images/line_charts.png"></kbd>
