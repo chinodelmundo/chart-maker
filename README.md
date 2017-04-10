@@ -3,7 +3,7 @@
 Web app for creating and cuztomizing different kinds of charts. 
 Created using Chart.js and Angular.js.
 
-See demo: [https://chinodelmundo.github.io//chart-maker/](https://chinodelmundo.github.io//chart-maker/)
+See demo: [https://chinodelmundo.github.io/chart-maker/](https://chinodelmundo.github.io/chart-maker/)
 
 ## Sample Charts
 
