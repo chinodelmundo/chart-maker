@@ -1,6 +1,6 @@
 .chart-info-panel {
 	max-height: 700;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 .chart-info-label {
